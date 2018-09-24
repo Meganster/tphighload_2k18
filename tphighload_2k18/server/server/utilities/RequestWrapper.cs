@@ -12,12 +12,6 @@ namespace server
         private const char Colon = ':';
         private const char QuestionMark = '?';
         private const char Percentage = '%';
-        private const char Zero = '0';
-        private const char Nine = '9';
-        private const char a = 'a';
-        private const char f = 'f';
-        private const char A = 'A';
-        private const char F = 'F';
 
 		public void Set(HttpRequest request, HttpResponse response)
         {
@@ -317,8 +311,8 @@ namespace server
                     }
                     else if (ch == Percentage && pos < count - 2)
                     {
-                        int h1 = HexToInt(value[pos + 1]);
-                        int h2 = HexToInt(value[pos + 2]);
+                        int h1 = int.Parse(value[pos + 1].ToString(), System.Globalization.NumberStyles.HexNumber);
+                        int h2 = int.Parse(value[pos + 2].ToString(), System.Globalization.NumberStyles.HexNumber);
 
                         if (h1 >= 0 && h2 >= 0)
                         {
@@ -372,26 +366,6 @@ namespace server
 
                 FlushBytes();
                 return new string(CharBuffer, 0, NumChars);
-            }
-
-            private static int HexToInt(char h)
-            {
-                if (h >= Zero && h <= Nine)
-                {
-                    return h - Zero;
-                }
-
-                if (h >= a && h <= f)
-                {
-                    return h - a + 10;
-                }
-
-                if (h >= A && h <= F)
-                {
-                    return h - A + 10;
-                }
-
-                return -1;
             }
         }
 

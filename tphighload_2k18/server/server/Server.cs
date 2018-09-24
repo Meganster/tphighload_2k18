@@ -52,7 +52,7 @@ namespace server
                 while (true)
                 {
 					TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
-                    ProcessingAsync(tcpClient);
+                    await ProcessingAsync(tcpClient);
                 }
             }
             finally
