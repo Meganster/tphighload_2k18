@@ -40,8 +40,15 @@ namespace server
 				// магия
                 // установка макс количества подключений к пулу потоков
 				Console.WriteLine($"Current thread_limit: {Settings.ThreadLimit}");
-                ThreadPool.SetMinThreads(2, 1);
-                ThreadPool.SetMaxThreads(2, 1);
+                ThreadPool.SetMaxThreads(Settings.ThreadLimit, Settings.ThreadLimit);
+
+                // 1 cpu
+                //ThreadPool.SetMinThreads(1, 1);
+                //ThreadPool.SetMaxThreads(1, 1);
+
+                // 2 cpu
+                //ThreadPool.SetMinThreads(2, 1);
+                //ThreadPool.SetMaxThreads(2, 1);
             }
 
             TcpListener tcpListener = null;
