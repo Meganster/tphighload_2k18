@@ -117,13 +117,13 @@ namespace server
                 }
             }
         }
-        
-		public static Settings LoadSettings(string settingsFilePath)
+
+        public static Settings LoadSettings(string settingsFilePath)
         {
             try
             {
-				var regex = new Regex(@"^(?<property>\w*)\s(?<value>[^#]*)",
-				                      RegexOptions.Compiled | RegexOptions.Singleline);
+                var regex = new Regex(@"^(?<property>\w*)\s(?<value>[^#]*)",
+                                      RegexOptions.Compiled | RegexOptions.Singleline);
 
                 Dictionary<string, string> settings = new Dictionary<string, string>();
                 var lines = File.ReadAllLines(settingsFilePath);
@@ -134,7 +134,7 @@ namespace server
 
                     if (match.Success)
                     {
-						var key = match.Groups["property"].Value.Trim();
+                        var key = match.Groups["property"].Value.Trim();
                         var value = match.Groups["value"].Value.Trim();
                         settings[key] = value;
                     }

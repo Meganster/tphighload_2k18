@@ -7,19 +7,19 @@ namespace server
     {
         public void Set(HttpResponse response)
         {
-			// set server and date headers
-			response.Headers["Server"] = "server";
+            // set server and date headers
+            response.Headers["Server"] = "server";
             response.Headers["Date"] = DateTime.UtcNow.ToString("r");
 
             // set connection headers
-			response.KeepAlive = false;
+            response.KeepAlive = false;
             response.Headers["Connection"] = "close";
 
             // set RawHeaders
             string newLine = response.UseCrLf ? "\r\n" : "\n";
-			StringBuilder headers = new StringBuilder();
-            
-			headers.Append(response.HttpVersion?.GetCaption() ?? HttpVersion.Http11.GetCaption());
+            StringBuilder headers = new StringBuilder();
+
+            headers.Append(response.HttpVersion?.GetCaption() ?? HttpVersion.Http11.GetCaption());
             headers.Append(" ");
             headers.Append(response.HttpStatusCode?.GetCaption());
             headers.Append(newLine);

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace server
 {
-	public class RequestWrapper
+    public class RequestWrapper
     {
         private const char Space = ' ';
         private const char Cr = '\r';
@@ -13,7 +13,7 @@ namespace server
         private const char QuestionMark = '?';
         private const char Percentage = '%';
 
-		public void Set(HttpRequest request, HttpResponse response)
+        public void Set(HttpRequest request, HttpResponse response)
         {
             if (!response.Success)
             {
@@ -32,17 +32,17 @@ namespace server
                     break;
                 }
             }
-            
+
             int lineCount = 0;
             using (var stream = new StringReader(request.RawRequest))
             {
-				string firstLine = stream.ReadLine();
+                string firstLine = stream.ReadLine();
 
                 // проверим есть ли в строке данные
                 if (string.IsNullOrWhiteSpace(firstLine))
                 {
                     response.Success = false;
-					response.HttpStatusCode = HttpStatusCode.NotAllowed;
+                    response.HttpStatusCode = HttpStatusCode.NotAllowed;
                     return;
                 }
 
@@ -66,7 +66,7 @@ namespace server
                     // строка битая, вернем ошибку
                     if (colonIndex < 1 || line.Length == colonIndex - 1)
                     {
-						response.HttpStatusCode = HttpStatusCode.NotAllowed;
+                        response.HttpStatusCode = HttpStatusCode.NotAllowed;
                         return;
                     }
 
@@ -78,7 +78,7 @@ namespace server
             if (lineCount == 0)
             {
                 response.Success = false;
-				response.HttpStatusCode = HttpStatusCode.NotAllowed;
+                response.HttpStatusCode = HttpStatusCode.NotAllowed;
             }
         }
 
@@ -110,7 +110,7 @@ namespace server
         private static bool ParseMethod(string line, HttpRequest request, HttpResponse response, ref int position)
         {
             int startPosition = position;
-			bool isGetMethod = true;
+            bool isGetMethod = true;
             bool isHeadMethod = true;
             string getCaption = HttpMethod.Get.GetCaption();
             string headCaption = HttpMethod.Head.GetCaption();
@@ -118,15 +118,15 @@ namespace server
             for (; position < line.Length && line[position] != Space && line[position] != Cr; position++)
             {
                 if (isGetMethod
-                    && ((position - startPosition) >= getCaption.Length 
-				        || line[position] != getCaption[position - startPosition]))
+                    && ((position - startPosition) >= getCaption.Length
+                        || line[position] != getCaption[position - startPosition]))
                 {
                     isGetMethod = false;
                 }
 
                 if (isHeadMethod
-                    && ((position - startPosition) >= headCaption.Length 
-				        || line[position] != headCaption[position - startPosition]))
+                    && ((position - startPosition) >= headCaption.Length
+                        || line[position] != headCaption[position - startPosition]))
                 {
                     isHeadMethod = false;
                 }
@@ -149,7 +149,7 @@ namespace server
             return false;
         }
 
-        private static bool ParseUrl( string line, HttpRequest request, HttpResponse response, ref int position)
+        private static bool ParseUrl(string line, HttpRequest request, HttpResponse response, ref int position)
         {
             int startPosition = position;
             bool pathEncoded = false;
@@ -164,7 +164,7 @@ namespace server
                     {
                         // Начинаться с ? некорректно
                         response.Success = false;
-						response.HttpStatusCode = HttpStatusCode.NotAllowed;
+                        response.HttpStatusCode = HttpStatusCode.NotAllowed;
                         return false;
                     }
 
@@ -179,7 +179,7 @@ namespace server
                     {
                         // Начинаться с % некорректно
                         response.Success = false;
-						response.HttpStatusCode = HttpStatusCode.NotAllowed;
+                        response.HttpStatusCode = HttpStatusCode.NotAllowed;
                         return false;
                     }
 
@@ -191,14 +191,14 @@ namespace server
             {
                 // пустой URL
                 response.Success = false;
-				response.HttpStatusCode = HttpStatusCode.NotAllowed;
+                response.HttpStatusCode = HttpStatusCode.NotAllowed;
                 return false;
             }
 
             // декодирование url
-            request.Url = pathEncoded 
-				? new Decoder(position - startPosition).Decode(line, startPosition, position) 
-				: line.Substring(startPosition, position - startPosition);         
+            request.Url = pathEncoded
+                ? new Decoder(position - startPosition).Decode(line, startPosition, position)
+                : line.Substring(startPosition, position - startPosition);
 
             // т.к. get параметры не нужны, то игнорируем их
             for (; position < line.Length && line[position] != Space; position++)
@@ -208,13 +208,13 @@ namespace server
             return true;
         }
 
-        private static bool ParseVersion( string line, HttpRequest request, HttpResponse response, ref int position)
+        private static bool ParseVersion(string line, HttpRequest request, HttpResponse response, ref int position)
         {
             int startPosition = position;
             bool isHttp10 = true;
-			bool isHttp11 = true;
+            bool isHttp11 = true;
             string http10Caption = HttpVersion.Http10.GetCaption();
-			string http11Caption = HttpVersion.Http11.GetCaption();
+            string http11Caption = HttpVersion.Http11.GetCaption();
 
             for (; position < line.Length && line[position] != Space && line[position] != Cr; position++)
             {
@@ -251,7 +251,7 @@ namespace server
             }
 
             response.Success = false;
-			response.HttpStatusCode = HttpStatusCode.NotAllowed;
+            response.HttpStatusCode = HttpStatusCode.NotAllowed;
             return false;
         }
 

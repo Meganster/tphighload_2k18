@@ -29,7 +29,7 @@ namespace server
             Settings = settings;
         }
 
-		public void Set(HttpRequest request, HttpResponse response)
+        public void Set(HttpRequest request, HttpResponse response)
         {
             if (!response.Success)
             {
@@ -39,18 +39,18 @@ namespace server
             string path = request.Url;
             if (string.IsNullOrWhiteSpace(path))
             {
-				response.HttpStatusCode = HttpStatusCode.NotAllowed;
+                response.HttpStatusCode = HttpStatusCode.NotAllowed;
                 return;
             }
 
-			bool isForbiden = false;
+            bool isForbiden = false;
             if (path == "/")
             {
                 path = Settings.DefaultDirectioryFile;
             }
             else if (path[path.Length - 1] == '/')
             {
-				isForbiden = true;
+                isForbiden = true;
                 path = path + Settings.DefaultDirectioryFile;
             }
 
@@ -73,7 +73,7 @@ namespace server
 
             if (fileInfo == null || !fileInfo.Exists || !fileInfo.FullName.StartsWith(Settings.Root))
             {
-				response.HttpStatusCode = isForbiden ? HttpStatusCode.Forbidden : HttpStatusCode.NotFound;
+                response.HttpStatusCode = isForbiden ? HttpStatusCode.Forbidden : HttpStatusCode.NotFound;
                 return;
             }
 
